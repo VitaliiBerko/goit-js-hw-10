@@ -1,19 +1,30 @@
 {
   "name": "goit-js-hw-10",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "",
-  "main": "index.js",
+  "homepage": "https://vitaliiberko.github.io/goit-js-hw-10",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "parcel src/*.html",
+    "build": "parcel build src/*.html --public-url /goit-js-hw-10/"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/VitaliiBerko/goit-js-hw-10.git"
+    "url": "git+https://vitaliiberko.github.io/goit-js-hw-10"
   },
-  "author": "Vitalii Berko",
+  "keywords": [],
+  "author": "Vitalii Berko <vitalii.v.berko@gmail.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/VitaliiBerko/goit-js-hw-10/issues"
+    "url": "https://vitaliiberko.github.io/goit-js-hw-10"
   },
-  "homepage": "https://github.com/VitaliiBerko/goit-js-hw-10#readme"
+  "dependencies": {
+    "modern-normalize": "^1.1.0"
+  },
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.6.0",
+    "parcel": "^2.6.0",
+    "parcel-reporter-clean-dist": "^1.0.4",
+    "posthtml-include": "^1.7.4"
+  },
+  "browserslist": "> 0.5%, last 2 versions, not dead"
 }
