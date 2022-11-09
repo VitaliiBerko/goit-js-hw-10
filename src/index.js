@@ -6,24 +6,75 @@ import Notiflix from 'notiflix';
 
 const DEBOUNCE_DELAY = 300;
 const inputSearchForm = document.querySelector('#search-box');
+const userInfoCountry = document.querySelector('.country-info');
+const userListCountrys = document.querySelector('.country-list');
 
 console.log(API.fetchCountries());
 console.log(inputSearchForm);
 
-inputSearchForm.addEventListener('input', debounce(onSearchInput, 300));
+inputSearchForm.addEventListener('input', debounce(onSearchInput, DEBOUNCE_DELAY));
 
 function onSearchInput(e) {
   const form = e.target;
-  const searchQuery = form.value;
+  const searchQuery = form.value.trim();
 
-  console.log(e.target.value);
+  const quantityCountrys = API.fetchCountries(searchQuery)
+     .then(data => {
+      return data.length;
+    });
+
+  console.log(quantityCountrys);
 
   API.fetchCountries(searchQuery)
-    .then(renderCountryCard)
+    .then(renderCountrysList)
     .catch(() =>
       Notiflix.Notify.failure('Oops, there is no country with that name')
-    )
-    // .finally(() => {form.reset()});
+    );
+
+  // if(quantityCountrys===1) {
+  // API.fetchCountries(searchQuery)
+  // .then(renderCountryCard)
+  // .catch(() =>
+  //   Notiflix.Notify.failure('Oops, there is no country with that name')
+  // );
+
+  // // } else if(quantityCountrys<=10 && quantityCountrys>1 ) {
+  //   API.fetchCountries(searchQuery)
+  //   .then(renderCountrysList)
+  //   .catch(() =>
+  //     Notiflix.Notify.failure('Oops, there is no country with that name')
+  //   );
+  // }  else {API.fetchCountries(searchQuery).then(() =>
+  //     Notiflix.Notify.info('Too many matches found. Please enter a more specific name.')}
+  
 }
 
-function renderCountryCard(coutry) {}
+function renderCountryCard(coutrys) {
+  const markup = coutrys
+    .map(({ name, capital, population, flags, languages }) => {
+      const valuesLanguages = Object.values(languages);
+      return `<ul>
+      <img src="${flags.svg}" alt="Flag" width="60">
+      
+    <h2>${name.official}</h2>
+    <li> Capital: ${capital}</li>
+    <li>Population: ${population}</li>
+    <li>Languages: ${valuesLanguages.join(', ')}</li>
+    </ul>`;
+    })
+    .join('');
+  userInfoCountry.insertAdjacentHTML('afterbegin', markup);
+};
+
+
+function renderCountrysList(coutrys) {
+  const markup = coutrys
+    .map(({ name, flags }) => {
+      return `<li>
+            
+    <h3><img src="${flags.svg}" alt="Flag" width="30">  ${name.official}</h3>   
+    </li>`;
+    })
+    .join('');
+  userListCountrys.insertAdjacentHTML('afterbegin', markup);
+}

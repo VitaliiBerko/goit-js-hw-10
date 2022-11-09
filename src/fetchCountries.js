@@ -5,12 +5,12 @@
 
 
 function fetchCountries(name) {
-  return  fetch(`https://restcountries.com/v3.1/name/${name}`).then(r=>{
+  return  fetch(`https://restcountries.com/v3.1/name/${name}?fields=name,capital,population,flags,languages`).then(r=>{
         return r.json()
     })
 };
 
-fetchCountries('niger');
+
 
 
 export {fetchCountries};
