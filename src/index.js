@@ -4,6 +4,10 @@ import * as API from './fetchCountries';
 import debounce from 'lodash.debounce';
 import Notiflix from 'notiflix';
 
+ Notiflix.Notify.init({
+  position: 'center-top',
+});
+
 const DEBOUNCE_DELAY = 300;
 const inputSearchForm = document.querySelector('#search-box');
 const userInfoCountry = document.querySelector('.country-info');
