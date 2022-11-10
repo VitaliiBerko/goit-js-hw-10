@@ -9,44 +9,51 @@ const inputSearchForm = document.querySelector('#search-box');
 const userInfoCountry = document.querySelector('.country-info');
 const userListCountrys = document.querySelector('.country-list');
 
-console.log(API.fetchCountries());
-console.log(inputSearchForm);
+// console.log(API.fetchCountries());
 
-inputSearchForm.addEventListener('input', debounce(onSearchInput, DEBOUNCE_DELAY));
+inputSearchForm.addEventListener(
+  'input',
+  debounce(onSearchInput, DEBOUNCE_DELAY)
+);
 
 function onSearchInput(e) {
   const form = e.target;
   const searchQuery = form.value.trim();
+  if (!searchQuery) {
+    clearContainer();
+    return;
+  }
 
-  const quantityCountrys = API.fetchCountries(searchQuery)
-     .then(data => {
-      return data.length;
-    });
-
-  console.log(quantityCountrys);
+  const quantityCountrys = API.fetchCountries(searchQuery).then(data =>console.log(data.length));
 
   API.fetchCountries(searchQuery)
-    .then(renderCountrysList)
+    .then(renderCountryCard)
     .catch(() =>
       Notiflix.Notify.failure('Oops, there is no country with that name')
-    );
+    )
+    .finally(clearContainer());
 
-  // if(quantityCountrys===1) {
-  // API.fetchCountries(searchQuery)
-  // .then(renderCountryCard)
-  // .catch(() =>
-  //   Notiflix.Notify.failure('Oops, there is no country with that name')
-  // );
-
-  // // } else if(quantityCountrys<=10 && quantityCountrys>1 ) {
+  // if (quantityCountrys === 1) {
   //   API.fetchCountries(searchQuery)
-  //   .then(renderCountrysList)
-  //   .catch(() =>
-  //     Notiflix.Notify.failure('Oops, there is no country with that name')
+  //     .then(renderCountryCard)
+  //     .catch(() =>
+  //       Notiflix.Notify.failure('Oops, there is no country with that name')
+  //     );
+  // }
+  // else if (quantityCountrys <= 10 && quantityCountrys > 1) {
+  //   API.fetchCountries(searchQuery)
+  //     .then(renderCountrysList)
+  //     .catch(() =>
+  //       Notiflix.Notify.failure('Oops, there is no country with that name')
+  //     );
+  // }
+  // else {
+  //   API.fetchCountries(searchQuery).then(() =>
+  //     Notiflix.Notify.info(
+  //       'Too many matches found. Please enter a more specific name.'
+  //     )
   //   );
-  // }  else {API.fetchCountries(searchQuery).then(() =>
-  //     Notiflix.Notify.info('Too many matches found. Please enter a more specific name.')}
-  
+  // }
 }
 
 function renderCountryCard(coutrys) {
@@ -64,17 +71,20 @@ function renderCountryCard(coutrys) {
     })
     .join('');
   userInfoCountry.insertAdjacentHTML('afterbegin', markup);
-};
-
+}
 
 function renderCountrysList(coutrys) {
   const markup = coutrys
     .map(({ name, flags }) => {
-      return `<li>
-            
+      return `<li>            
     <h3><img src="${flags.svg}" alt="Flag" width="30">  ${name.official}</h3>   
     </li>`;
     })
     .join('');
   userListCountrys.insertAdjacentHTML('afterbegin', markup);
+}
+
+function clearContainer() {
+  userInfoCountry.innerHTML = '';
+  userListCountrys.innerHTML = '';
 }
