@@ -24,30 +24,25 @@ function onSearchInput(e) {
     clearContainer();
     return;
   }
-  
-  API.fetchCountries(searchQuery).then(data => {
-    if (data.length === 1) {
-      API.fetchCountries(searchQuery)
-        .then(renderCountryCard)
-        .catch(() =>
-          Notiflix.Notify.failure('Oops, there is no country with that name')
-        )
-        .finally(clearContainer());
-    } else if (data.length <= 10 && data.length > 1) {
-      API.fetchCountries(searchQuery)
-        .then(renderCountrysList)
-        .catch(() =>
-          Notiflix.Notify.failure('Oops, there is no country with that name')
-        )
-        .finally(clearContainer());
-    } else {
-      API.fetchCountries(searchQuery).then(() =>
-        Notiflix.Notify.info(
-          'Too many matches found. Please enter a more specific name.'
-        )
-      );
-    }
-  });
+
+  API.fetchCountries(searchQuery)
+    .then(data => {
+      if (data.length === 1) {
+        API.fetchCountries(searchQuery).then(renderCountryCard);
+      } else if (data.length <= 10 && data.length > 1) {
+        API.fetchCountries(searchQuery).then(renderCountrysList);
+      } else {
+        API.fetchCountries(searchQuery).then(() =>
+          Notiflix.Notify.info(
+            'Too many matches found. Please enter a more specific name.'
+          )
+        );
+      }
+    })
+    .catch(() =>
+      Notiflix.Notify.failure('Oops, there is no country with that name')
+    )
+    .finally(clearContainer());
 }
 
 function renderCountryCard(coutrys) {
