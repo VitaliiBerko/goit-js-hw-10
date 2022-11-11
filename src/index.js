@@ -1,4 +1,3 @@
-import debounce from 'lodash.debounce';
 import './css/styles.css';
 import * as API from './fetchCountries';
 import debounce from 'lodash.debounce';
@@ -46,7 +45,7 @@ function onSearchInput(e) {
     .catch(() =>
       Notiflix.Notify.failure('Oops, there is no country with that name')
     )
-    .finally(clearContainer());
+    .finally(clearContainer);
 }
 
 function renderCountryCard(coutrys) {
